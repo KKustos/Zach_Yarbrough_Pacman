@@ -1,0 +1,144 @@
+<html>
+<head>
+	<title>Mario</title>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="./img/kkustos.ico">
+	<style type="text/css">
+		body{
+			background-color: black;
+			margin:0px;
+		}
+		div.row div {
+			width:20px;
+			height:20px;
+			display:inline-block;
+		}
+		div.brick{
+			background-color:brown;
+		}
+		div.empty{
+			background-color:black;
+		}
+		div.coin{
+			background: url("img/coin.gif");
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+		}
+		div.mushroom{
+			background: url("img/mushroom.gif");
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+		}
+		div#mario{
+			background: url("img/mario.gif");
+			background-repeat:no-repeat;
+			background-position:center;	
+			background-size:cover;
+			width: 20px;
+			height: 20px;
+			position:absolute;
+		}
+		div#score{
+			position:absolute;
+			top:5px;
+			left:300px;
+			border:2px solid white;
+			padding:10px;
+			width:25px;
+			height:25px;
+			text-align: center;
+			color:white;
+			font-size:20px;
+		}
+	</style>
+</head>
+<body>
+
+	<div id='world'>
+	</div>
+	<div id='score'>0</div>
+
+	<div id='mario' style='position:absolute;'></div>
+        <script>
+		var score = 0;
+		var mario = {
+			x: 1,
+			y: 8
+		}
+		var world = [
+			[2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+			[2,1,1,1,1,1,1,1,1,1,1,1,1,2],
+			[2,1,1,1,3,1,1,1,1,3,1,1,1,2],
+			[2,1,1,2,2,2,1,1,2,2,2,1,1,2],
+			[2,1,1,1,1,1,1,1,1,1,1,1,1,2],
+			[2,1,1,1,3,1,1,1,1,3,1,1,1,2],
+			[2,1,1,2,2,2,1,1,2,2,2,1,1,2],
+			[2,1,1,1,1,1,1,1,1,1,1,1,1,2],
+			[2,0,1,1,1,1,1,1,1,1,1,1,1,2],
+			[2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+		];
+		function displayMario(){
+			document.getElementById('mario').style.top = mario.y*20;
+			document.getElementById('mario').style.left = mario.x*20;
+		}
+		function updateScore(){
+			document.getElementById('score').innerHTML = score;
+		}
+		function displayWorld(){
+			var output = '';
+			for(var i=0; i<world.length; i++){
+				output += "\n<div class='row'>";
+				for(var j=0; j<world[i].length; j++){
+					if(world[i][j] == 2){
+						output += "<div class='brick'></div>";
+					}
+					else if(world[i][j] == 1){
+						output += "<div class='coin'></div>";
+					}
+					else if(world[i][j] == 0){
+						output += "<div class='empty'></div>";
+					}
+					else if(world[i][j] == 3){
+						output += "<div class='mushroom'></div>";
+					}
+				}
+				output += "</div>";
+			}
+			document.getElementById('world').innerHTML = output;
+		}
+		displayWorld();
+		displayMario();
+		document.onkeydown = function(e){
+			if(e.keyCode == 37){
+				mario.x--;
+			}
+			else if(e.keyCode == 39){
+				mario.x++;
+			}
+			else if(e.keyCode == 38){
+				mario.y--;
+			}
+			else if(e.keyCode == 40){
+				mario.y++;
+			}
+			if(world[mario.y][mario.x] == 1){
+				world[mario.y][mario.x] = 0;
+				score += 10;
+			}
+			if(world[mario.y][mario.x] == 3){
+				world[mario.y][mario.x] = 0;
+				score += 50;
+			}
+			displayMario();
+			displayWorld();
+			updateScore();
+		}
+		</script>
+
+	</div>
+
+</body>
+</html>
